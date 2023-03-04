@@ -11,6 +11,8 @@ import {
    Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { Transaction } from 'plaid';
+import { roundValue } from '@/utils/helperFuncts';
 
 ChartJS.register(
    CategoryScale,
@@ -21,7 +23,13 @@ ChartJS.register(
    Legend
 );
 
-const BarGraph = () => {
+type Props = {
+   spending: Transaction[],
+   earnings: Transaction[],
+   date: string
+}
+
+const BarGraph = ({spending, earnings, date}: Props) => {
    const options = {
       responsive: true,
       maintainAspectRatio: false,
@@ -64,13 +72,27 @@ const BarGraph = () => {
          }
       }
    }
+   
+   const addAmounts = (type:string) => {
+      let totalSpending: number = 0
+      if (type === 'earnings')
+         earnings.map((item) => {
+            totalSpending += Math.abs(item.amount)
+         })
+      else
+         spending.map((item) => {
+            totalSpending += item.amount
+         })
+
+      return roundValue(totalSpending)
+   }
 
    const data = {
-      labels: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July'],
+      labels: [date],
       datasets: [
          {
             label: 'Earned',
-            data: [120,270,300,610,900,547,234],
+            data: [addAmounts('earnings')],
             backgroundColor: '#F5CB5C',
             borderColor: '#333533',
             borderWidth: 1,
@@ -78,7 +100,7 @@ const BarGraph = () => {
          },
          {
             label: 'Spent',
-            data: [90,370,560,725,400,105,70],
+            data: [addAmounts('spending')],
             backgroundColor: '#E8EDDF',
             borderColor: '#333533',
             borderWidth: 1,

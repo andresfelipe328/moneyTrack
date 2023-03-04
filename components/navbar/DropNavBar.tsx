@@ -26,15 +26,15 @@ const NAVLINKS = [
       name: 'dashboard',
       href: '/'
    },
-   {
-      icon: FaBell,
-      name: 'notifications',
-      href: '/notifications'
-   },
+   // {
+   //    icon: FaBell,
+   //    name: 'notifications',
+   //    href: '/notifications'
+   // },
    {
       icon: FaListUl,
-      name: 'transactions',
-      href: '/transactions'
+      name: 'bills & transactions',
+      href: '/bills-transactions'
    },
    {
       icon: FaChartBar,

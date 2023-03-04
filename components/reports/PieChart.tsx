@@ -9,6 +9,9 @@ import {
  } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import { BsCreditCard2BackFill } from 'react-icons/bs';
+import { Transaction } from 'plaid';
+import { roundValue } from '@/utils/helperFuncts';
+import { ChartContent } from '@/utils/data_types';
 
 ChartJS.register(
    ArcElement, 
@@ -16,7 +19,12 @@ ChartJS.register(
    Legend
 );
 
-const PieChart = () => {
+type Props = {
+   spending: ChartContent[]
+}
+
+const PieChart = ({spending}: Props) => {
+
    const options = {
       responsive: true,
       maintainAspectRatio: false,
@@ -46,33 +54,36 @@ const PieChart = () => {
          },
          title: {
             display: false,
-         },
+         }
       }
    };
 
    const data = {
-      labels: [
-        'Recreation',
-        'healthcare',
-        'Food'
-      ],
+      labels: spending.map(label => label.label),
       datasets: [{
-        data: [300, 50, 100],
-        backgroundColor: [
-          '#E0E1DD',
-          '#778DA9',
-          '#F5CB5C'
-        ],
+        data: spending.map(amount => amount.amount),
+        backgroundColor: spending.map(color => color.color.color),
       }]
    };
 
+   const currentSpending = () => {
+      let totalSpending: number = 0
+      spending.map((item) => {
+         totalSpending += item.amount
+      })
+
+      return (
+         <p>${roundValue(totalSpending)}</p>
+      )
+   }
+
    return (
       <div className='relative h-[15rem]'>
-         <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center -z-10'>
+         {/* <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10'>
             <BsCreditCard2BackFill className='icon text-xl mx-auto'/>
             <p>Monthly Spending:</p>
-            <p>$450</p>
-         </div>
+            {currentSpending()}
+         </div> */}
          <Doughnut data={data} options={options}/>
       </div>
    )

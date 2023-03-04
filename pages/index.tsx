@@ -54,6 +54,7 @@ export default function Home({accounts, budgets, subList, spending}: {accounts: 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     const cookies = nookies.get(ctx)
+    console.log(cookies.token)
     const token = await verifyIDToken(cookies.token)
     let accountsList: Account[] | [{}] = []
     let subList:Subscription[] | [{}] = [] 
@@ -78,6 +79,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
           });
           const accounts = response.data.accounts;
           const omitAcc = ['savings', 'cd']
+          
           accounts.forEach((acc:any) => {
             accountsList.push(acc)
             if (!omitAcc.includes(acc.subType))
@@ -95,7 +97,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
           // ==========================================================================================================
 
           // Get Monthly Current Spending =============================================================================
-          let todayDate: Date | string = new Date()
+          const todayDate: Date = new Date()
           const firstMonthDate = new Date(todayDate.getFullYear(), todayDate.getMonth(), 1).toISOString().slice(0, 10)
           const monthlyTranscations = await client.transactionsGet({
             access_token,
@@ -116,11 +118,12 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
             transactions = transactions.concat(remainingTransactions.data.transactions)
           }
           
-          const omitCategories = ['Transfer', 'Credit Card', 'Deposit', 'Payment']
-          transactions.forEach((transactionItem) => {
-            if (!omitCategories.some(r=> transactionItem.category!.indexOf(r) >= 0)) {
+          const omitCategories = ['Transfer', 'Credit Card', 'Deposit', 'Payment', 'Service']
+          transactions.reverse().forEach((transactionItem) => {
+            if (!omitCategories.some((r) => transactionItem.category!.indexOf(r) >= 0) && 
+                !omitCategories.some((r) => transactionItem.name.indexOf(r) >= 0)) {
               spending.push({
-                name: transactionItem.name,
+                name: transactionItem.merchant_name || 'N/A',
                 amount: Math.abs(transactionItem.amount),
                 date: transactionItem.date
               })
@@ -135,14 +138,21 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
           });
 
           let outflowStreams = recurringTransactions.data.outflow_streams;
+          const tmpDate:Date = new Date()
           outflowStreams.forEach((transaction) => {
-            if (transaction.category.includes('Subscription')) {
+            const lastTransactionMonth: number = new Date(transaction.last_date).getMonth()
+            const prevMonth:number = new Date(tmpDate.setMonth(tmpDate.getMonth() - 1)).getMonth()
+            const transactionCount = transaction.transaction_ids.length
+
+            if (transaction.category.includes('Subscription') 
+                && (prevMonth === lastTransactionMonth || (transactionCount === 1 || todayDate.getMonth() === lastTransactionMonth)))
               subList.push({
                 name: transaction.merchant_name!,
+                firstDate: transaction.first_date,
                 amount: transaction.average_amount.amount!,
                 id: transaction.stream_id
               })
-            }
+            
           })
           // ==========================================================================================================
         }
@@ -161,7 +171,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       }
    }
 
-  } catch(err) {
+  } catch(err:any) {
+    console.log(err)
     return {
       redirect: {destination: '/login'}
     }

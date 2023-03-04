@@ -7,9 +7,10 @@ import {client} from '../../config/plaid'
 // }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+   const userID = req.body
    const configs:any = {
       user: {
-         client_user_id: 'someid12345',
+         client_user_id: userID,
       },
       client_name: 'moneytrack',
       products: ['transactions'],

@@ -19,13 +19,13 @@ const NAVLINKS = [
       icon: RiDashboardFill,
       href: '/'
    },
-   {
-      icon: FaBell,
-      href: '/notifications'
-   },
+   // {
+   //    icon: FaBell,
+   //    href: '/notifications'
+   // },
    {
       icon: FaListUl,
-      href: '/transactions'
+      href: '/bills-transactions'
    },
    {
       icon: FaChartBar,
@@ -44,7 +44,7 @@ const Navbar = () => {
    const [showMenu, setShowMenu] = useState(false)
    useEffect(() => {
       const handleResize = () => {
-         if (window.innerWidth > 425) {
+         if (window.innerWidth > 470) {
             setShowMenu(false)
          }
       }
@@ -55,8 +55,6 @@ const Navbar = () => {
          window.removeEventListener('resize', handleResize)
       }
    }, [])
-
-   // const {data: session} = useSession()
 
    const handleSignOut = async () => {
       await logout()
@@ -76,7 +74,7 @@ const Navbar = () => {
    }, [])
 
    return (
-      <nav className='flex items-start justify-between z-30 invisible' ref={ref}>
+      <nav className='flex items-start justify-between z-30 invisible rounded-md shadow-md p-2' ref={ref}>
          <Image
             src='/icon.svg'
             width={28}

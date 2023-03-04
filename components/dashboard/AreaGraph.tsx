@@ -22,6 +22,7 @@ ChartJS.register(
   Legend
 );
 import { Transaction } from '@/utils/data_types';
+import { roundValue } from '@/utils/helperFuncts';
 
 const AreaGraph = ({spending}: {spending: Transaction[]}) => {
    const labels = () => {
@@ -84,7 +85,6 @@ const AreaGraph = ({spending}: {spending: Transaction[]}) => {
             callbacks: {
                label: (ctx: any) => {
                   let label = ctx.raw;
-                  console.log(label)
                   return [`${spending[ctx.dataIndex].name}: `, `$${label}`]
                }
             }
@@ -132,13 +132,13 @@ const AreaGraph = ({spending}: {spending: Transaction[]}) => {
    };
 
    const currentSpending = () => {
-      let totalSpending = 0
+      let totalSpending: number = 0
       spending.map((item) => {
          totalSpending += item.amount
       })
 
       return (
-         <p>${totalSpending}</p>
+         <p>${roundValue(totalSpending)}</p>
       )
    }
 
@@ -148,7 +148,14 @@ const AreaGraph = ({spending}: {spending: Transaction[]}) => {
             Current Spending: {currentSpending()}
          </h2>
          <div className='h-[10rem]'>
-            <Line options={options} data={data} />
+         {spending.length === 0 
+            ?
+               <div className='flex h-full items-center justify-center'>
+                  <p>too early to display a charts</p>
+               </div>
+            :
+               <Line options={options} data={data} />
+         }
          </div>
       </>
    )

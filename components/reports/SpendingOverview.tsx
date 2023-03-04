@@ -1,10 +1,15 @@
 'use client'
 
+import { ChartContent } from '@/utils/data_types'
 import {useRef, useState} from 'react'
 import BudgetView from './BudgetView'
 import CategView from './CategView'
 
-const SpendingOverview = () => {
+type Props = {
+   spending: ChartContent[]
+}
+
+const SpendingOverview = ({spending}: Props) => {
    const [spendView, setSpendView] = useState('budget')
    const listRef = useRef<HTMLUListElement>(null)
 
@@ -38,7 +43,7 @@ const SpendingOverview = () => {
                ?
                   <BudgetView/>
                :
-                  <CategView/>
+                  <CategView spending={spending}/>
             }
          </ul>
       </div>

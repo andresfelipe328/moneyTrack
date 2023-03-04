@@ -83,6 +83,34 @@
     @apply bg-primary-dark/[50%];
   }
 
+  .modual-title {
+    @apply text-[1.15rem] text-primary-dark uppercase font-mono tracking-tight;
+  }
+
+  .bill-container {
+    @apply flex items-center justify-between;
+  }
+
+  .bill-name {
+    @apply text-primary-dark uppercase font-semibold font-mono text-[1.15rem] tracking-tight;
+  }
+
+  .bill-amount {
+    @apply text-secondary-dark font-mono font-extrabold;
+  }
+
+  .pagination-container {
+    @apply flex items-center bg-extra-light w-fit p-2 mx-auto rounded-md shadow-simple-shadow gap-2;
+  }
+
+  .pagination-item {
+    @apply hover:bg-secondary-dark hover:text-extra-light hover:shadow-simple-shadow rounded-md transition-all duration-300 ease-in-out [&>*]:p-2;
+  }
+
+  .active-page {
+    @apply bg-secondary-dark text-extra-light shadow-simple-shadow
+  }
+
   /* General Calendar */
   .react-calendar {
     @apply bg-secondary-dark rounded-md shadow-simple-shadow max-w-[35rem]; 

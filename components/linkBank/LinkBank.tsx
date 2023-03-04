@@ -19,9 +19,9 @@ const LinkBank = ({userID}: Props) => {
    const generateToken = async () => {
       const response = await fetch('/api/create_link_token', {
          method: 'POST',
+         body: JSON.stringify(userID)
       });
       const data = await response.json();
-      console.log(data)
       setLinkToken(data.link_token);
    };
    useEffect(() => {

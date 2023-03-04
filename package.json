@@ -27,8 +27,12 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
+    "react-loader-spinner": "^5.3.4",
+    "react-paginate": "^8.1.4",
     "react-plaid-link": "^3.3.2",
-    "typescript": "4.9.5"
+    "sweetalert2": "^11.7.2",
+    "typescript": "4.9.5",
+    "uniqolor": "^1.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",

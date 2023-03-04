@@ -8,7 +8,7 @@ const MainLayout = ({children}: {children: React.ReactNode}) => {
    return (
       <AuthContextProvider>
          <main className={`${oswald.className} bg-primary-dark h-screen`}>
-            <div className='flex flex-col gap-4 h-screen max-w-7xl mx-auto p-2'>
+            <div className='flex flex-col h-screen max-w-7xl mx-auto p-2'>
                <Navbar/>
                {children}
             </div>
