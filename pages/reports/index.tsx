@@ -67,13 +67,13 @@ export default function Reports({spending, bills, earnings, userID}: Props) {
             const color = uniqolor.random()
             content.push({
                label: item.category![0],
-               amount: item.amount,
+               amount: Math.abs(item.amount),
                color: color
             })
          }
          else{
             const spendCateg = content.find((data) => data.label === item.category![0])!
-            spendCateg.amount += item.amount
+            spendCateg.amount += Math.abs(item.amount)
          } 
       })
       return content
@@ -108,7 +108,7 @@ export default function Reports({spending, bills, earnings, userID}: Props) {
                         <div className='h-[12rem] w-[75%] sm-width:w-full mx-auto'>
                            <BarGraph spending={monthSpending} earnings={monthEarnings} date={date}/>
                         </div>
-                        <FinanceOverview earnings={monthEarnings} spending={monthSpending} bills={monthBills}/>
+                        <FinanceOverview earnings={monthEarnings} spending={monthSpending} bills={monthBills} date={date}/>
                      </div>
 
                      <div className="flex flex-col gap-2 h-max rounded-md bg-secondary-dark/[50%] shadow-md p-2">
@@ -181,8 +181,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
          while(transactions.length < monthlyTranscations.data.total_transactions) {
          const remainingTransactions = await client.transactionsGet({
             access_token,
-            start_date: '2023-02-01',
-            end_date: '2023-02-28',
+            start_date: firstMonthDate,
+            end_date: todayDate.toISOString().slice(0,10),
             options: {
                offset: transactions.length,
             }
@@ -214,8 +214,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     }
  
    } catch(err) {
-         return {
-            redirect: {destination: '/login'}
-         }
+      return {
+         redirect: {destination: '/login'}
+      }
    }
 }

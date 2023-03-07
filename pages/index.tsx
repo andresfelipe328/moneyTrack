@@ -14,6 +14,7 @@ import { doc, getDoc } from 'firebase/firestore'
 import { db } from '@/config/firebase'
 import { client } from '@/config/plaid'
 import { Account, Subscription, Transaction } from '@/utils/data_types'
+import { getAuth, signOut } from 'firebase/auth'
 
 export default function Home({accounts, budgets, subList, spending}: {accounts: Account[], budgets: Object, subList: Subscription[], spending:any}) {
   return (
@@ -54,7 +55,6 @@ export default function Home({accounts, budgets, subList, spending}: {accounts: 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     const cookies = nookies.get(ctx)
-    console.log(cookies.token)
     const token = await verifyIDToken(cookies.token)
     let accountsList: Account[] | [{}] = []
     let subList:Subscription[] | [{}] = [] 
@@ -171,7 +171,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       }
    }
 
-  } catch(err:any) {
+  } catch (err:any) {
     console.log(err)
     return {
       redirect: {destination: '/login'}

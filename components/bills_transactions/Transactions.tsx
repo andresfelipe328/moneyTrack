@@ -4,15 +4,10 @@ import TransactionItem from './TransactionItem'
 
 type Props = {
    transactions: Transaction[],
-   totalTransactions: number,
-   setTransactions: Function,
-   setTotalTransactions: Function
+   totalTransactions: number
 }
 
-const TransactionsList = ({transactions, totalTransactions, setTransactions, setTotalTransactions}: Props) => {
-
-   const todayDate = new Date()
-   const [date, setDate] = useState(new Date().toISOString().slice(0,7))
+const TransactionsList = ({transactions, totalTransactions}: Props) => {
 
    return (
       <div className="flex flex-col gap-2 h-max rounded-md bg-secondary-dark/[50%] shadow-md p-2">

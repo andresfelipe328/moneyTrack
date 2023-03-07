@@ -72,7 +72,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                earnings.push(transactionItem)
             }
          })
-         
          res.status(200).json({
             spending,
             bills,

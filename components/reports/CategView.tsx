@@ -6,6 +6,7 @@ import {BiCameraMovie} from 'react-icons/bi'
 
 import ViewLayout from './ViewLayout'
 import { ChartContent } from '@/utils/data_types'
+import { roundValue } from '@/utils/helperFuncts'
 
 type Props = {
    spending: ChartContent[]
@@ -36,10 +37,10 @@ const CategView = ({spending}: Props) => {
                      </div>
 
                      <div className='flex items-center gap-2'>
-                        <p>${spendCateg.amount}</p>
-                        <button className='group btn'>
+                        <p>${roundValue(spendCateg.amount)}</p>
+                        {/* <button className='group btn'>
                            <RiArrowRightSLine className='icon text-xl group-hover:text-extra-light'/>
-                        </button>
+                        </button> */}
                      </div>
                   </li>
                ))

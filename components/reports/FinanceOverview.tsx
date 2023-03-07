@@ -7,14 +7,16 @@ import {IoDocumentTextOutline} from 'react-icons/io5'
 import {RiArrowRightSLine} from 'react-icons/ri'
 import { Transaction } from 'plaid'
 import { roundValue } from '@/utils/helperFuncts'
+import Link from 'next/link'
 
 type Props = {
    earnings: Transaction[],
    spending: Transaction[],
-   bills: Transaction[]
+   bills: Transaction[],
+   date: string
 }
 
-const FinanceOverview = ({earnings, spending, bills}: Props) => {
+const FinanceOverview = ({earnings, spending, bills, date}: Props) => {
 
    const addAmounts = (type:string) => {
       let totalSpending: number = 0
@@ -24,11 +26,11 @@ const FinanceOverview = ({earnings, spending, bills}: Props) => {
          })
       else if (type === 'bills')
          bills.map((item) => {
-            totalSpending += item.amount
+            totalSpending += Math.abs(item.amount)
          })
       else
          spending.map((item) => {
-            totalSpending += item.amount
+            totalSpending += Math.abs(item.amount)
          })
 
       return (
@@ -39,7 +41,7 @@ const FinanceOverview = ({earnings, spending, bills}: Props) => {
    return (
       <ul className='flex flex-col justify-center mx-auto w-[75%] sm-width:w-full'>
 
-         <li className='flex items-center justify-between gap-2 hover:simple-hover p-2 rounded-md'>
+         <Link href={`/reports/earnings?date=${date}`} className='flex items-center justify-between gap-2 hover:simple-hover p-2 rounded-md'>
             <div className='flex items-center gap-2'>
                <div className='p-2 rounded-md shadow-label bg-green-400/[.75]'>
                   <FaMoneyCheckAlt className='icon text-3xl'/>
@@ -53,9 +55,9 @@ const FinanceOverview = ({earnings, spending, bills}: Props) => {
                   <RiArrowRightSLine className='icon text-xl group-hover:text-extra-light'/>
                </button>
             </div>
-         </li>
+         </Link>
 
-         <li className='flex items-center justify-between gap-2 hover:simple-hover p-2 rounded-md'>
+         <Link href={`/reports/bills?date=${date}`} className='flex items-center justify-between gap-2 hover:simple-hover p-2 rounded-md'>
             <div className='flex items-center gap-2'>
                <div className='p-2 rounded-md shadow-label bg-red-400/[.75]'>
                   <IoDocumentTextOutline className='icon text-3xl'/>
@@ -69,9 +71,9 @@ const FinanceOverview = ({earnings, spending, bills}: Props) => {
                   <RiArrowRightSLine className='icon text-xl group-hover:text-extra-light'/>
                </button>
             </div>
-         </li>
+         </Link>
          
-         <li className='flex items-center justify-between gap-2 hover:simple-hover p-2 rounded-md'>
+         <Link href={`/reports/spending?date=${date}`} className='flex items-center justify-between gap-2 hover:simple-hover p-2 rounded-md'>
             <div className='flex items-center gap-2'>
                <div className='p-2 rounded-md shadow-label bg-blue-400/[.75]'>
                   <BsCreditCard2BackFill className='icon text-3xl'/>
@@ -85,7 +87,7 @@ const FinanceOverview = ({earnings, spending, bills}: Props) => {
                   <RiArrowRightSLine className='icon text-xl group-hover:text-extra-light'/>
                </button>
             </div>
-         </li>
+         </Link>
       </ul>
    )
 }

@@ -28,8 +28,6 @@ const ItemPaginate = ({transactions, totalTransactions}: Props) => {
          <TransactionsList 
             transactions={currentItems} 
             totalTransactions={dispTotalTransactions}
-            setTransactions={setDispTransactions}
-            setTotalTransactions={setDispTotalTransactions}
          />
          <ReactPaginate
             breakLabel="..."

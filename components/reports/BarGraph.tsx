@@ -81,7 +81,7 @@ const BarGraph = ({spending, earnings, date}: Props) => {
          })
       else
          spending.map((item) => {
-            totalSpending += item.amount
+            totalSpending += Math.abs(item.amount)
          })
 
       return roundValue(totalSpending)

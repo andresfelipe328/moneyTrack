@@ -5,7 +5,7 @@ import BillItem from './BillItem'
 const Bills = ({bills}: {bills: Bill[]}) => {
    return (
       <div className="flex flex-col gap-2 h-max rounded-md bg-secondary-dark/[50%] shadow-md p-2">
-         <h3 className="bg-primary-dark py-2 px-4 rounded-md shadow-label w-fit text-extra-light">Bills</h3>
+         <h3 className="bg-primary-dark py-2 px-4 rounded-md shadow-label w-fit text-extra-light">Recurring Bills</h3>
          <ul className="w-full flex flex-col gap-4">
             {bills?.length > 0
                ?
